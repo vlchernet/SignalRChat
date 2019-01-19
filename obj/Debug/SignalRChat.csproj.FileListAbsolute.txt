@@ -1,0 +1,56 @@
+G:\SignalR\SignalRChat\SignalRChat\bin\SignalRChat.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\SignalRChat.pdb
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.Core.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.Owin.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.Owin.Host.SystemWeb.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.Owin.Security.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Newtonsoft.Json.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Owin.dll
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.Core.xml
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.Owin.xml
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.Owin.Host.SystemWeb.xml
+G:\SignalR\SignalRChat\SignalRChat\bin\Microsoft.Owin.Security.xml
+G:\SignalR\SignalRChat\SignalRChat\bin\Newtonsoft.Json.xml
+G:\SignalR\SignalRChat\SignalRChat\obj\Debug\SignalRChat.csprojResolveAssemblyReference.cache
+G:\SignalR\SignalRChat\SignalRChat\obj\Debug\SignalRChat.dll
+G:\SignalR\SignalRChat\SignalRChat\obj\Debug\SignalRChat.pdb
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\SignalRChat.dll.config
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\SignalRChat.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\SignalRChat.pdb
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.Core.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Owin.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Owin.Security.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Newtonsoft.Json.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Owin.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.Core.xml
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Owin.xml
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Owin.Security.xml
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Newtonsoft.Json.xml
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\obj\Debug\SignalRChat.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\obj\Debug\SignalRChat.pdb
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\bin\Microsoft.Web.Infrastructure.dll
+E:\KEPL JOB WORK\KEPL SHARED DATA\PROJECT CODE\HELP TOPICS\SignalR\SignalRChat\SignalRChat\SignalRChat\SignalRChat\obj\Debug\SignalRChat.csprojResolveAssemblyReference.cache
+D:\work\C#exercises\SignalRChat\bin\SignalRChat.dll.config
+D:\work\C#exercises\SignalRChat\bin\SignalRChat.dll
+D:\work\C#exercises\SignalRChat\bin\SignalRChat.pdb
+D:\work\C#exercises\SignalRChat\bin\Newtonsoft.Json.dll
+D:\work\C#exercises\SignalRChat\obj\Debug\SignalRChat.csproj.CoreCompileInputs.cache
+D:\work\C#exercises\SignalRChat\obj\Debug\SignalRChat.csproj.CopyComplete
+D:\work\C#exercises\SignalRChat\obj\Debug\SignalRChat.dll
+D:\work\C#exercises\SignalRChat\obj\Debug\SignalRChat.pdb
+D:\work\C#exercises\SignalRChat\obj\Debug\SignalRChat.csprojAssemblyReference.cache
+D:\C#exercises\SignalRChat\bin\SignalRChat.dll.config
+D:\C#exercises\SignalRChat\bin\SignalRChat.dll
+D:\C#exercises\SignalRChat\bin\SignalRChat.pdb
+D:\C#exercises\SignalRChat\bin\Newtonsoft.Json.dll
+D:\C#exercises\SignalRChat\obj\Debug\SignalRChat.csprojAssemblyReference.cache
+D:\C#exercises\SignalRChat\obj\Debug\SignalRChat.csproj.CoreCompileInputs.cache
+D:\C#exercises\SignalRChat\obj\Debug\SignalRChat.csproj.CopyComplete
+D:\C#exercises\SignalRChat\obj\Debug\SignalRChat.dll
+D:\C#exercises\SignalRChat\obj\Debug\SignalRChat.pdb

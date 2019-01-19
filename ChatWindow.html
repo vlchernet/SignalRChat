@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SignalR One to One Chat</title>
+    <!--<style>
+        canvas {
+            cursor: crosshair;
+            border: 1px solid #000000;
+        }
+    </style>-->
+    <style>
+        div {
+            margin: 3px;
+        }
+
+        canvas {
+            border: 2px solid #808080;
+        }
+    </style>
+</head>
+<body>
+    <!--Add reference to the JQuery file-->
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script> -->
+    <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+            crossorigin="anonymous"></script>-->
+    <!-- Add reference to the minified version of the SignarR client library -->
+    <script src="Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <!-- Add reference to the auto-generated proxy file -->
+    <script src="signalr/hubs"></script>
+
+    <!-- <script src="Scripts/DrawingBoard.js"></script> -->
+
+    <!--<script type="text/javascript" src="lib/signalr.min.js"></script>-->
+
+    <script src="signalr/chubs"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var _name = window.prompt("Please Enter your name");
+            $("#spnName").text(_name);
+            $('#txtMsg').val('');
+
+            //Get proxy instance using the auto-generated proxy class
+            var chatProxy = $.connection.signalRChatHub;
+            //chatProxy.client.foo = function () { };
+            // Bind the btnClick event when connection to the hub is started
+            $.connection.hub.start().done(function () {
+
+                try {
+                    $.connection.signalRChatHub.server.hubconnect($("#spnName").text(), $("#connID").text(), $("#connID").text());
+                } catch (e) { alert(e.message); }
+
+                $("#btnSend").click(function () {
+                    // Send Message to the Hub using the proxy instance
+                    if ($("#txtTo").val() == "") {
+                        chatProxy.server.broadCastMessage($("#spnName").text(), $("#txtMsg").val());
+                    }
+                    else {
+                        chatProxy.server.send_PrivateMessage($("#spnName").text(), $("#txtMsg").val(), $("#txtTo").val());
+                    }
+                    $('#txtMsg').val('').focus();
+                })
+
+                var canvas = $("#canvas");
+                var buttonPressed = false;
+                canvas.mousedown(function () {
+                    buttonPressed = true;
+                }).mouseup(function () { buttonPressed = false; }).mousemove(function (e) { if (buttonPressed) { setPoint(e.offsetX, e.offsetY, $("#color").val()); } });
+                var ctx = canvas[0].getContext("2d");
+                function setPoint(x, y, color) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill(); }
+                function clearPoints() { ctx.clearRect(0, 0, canvas.width(), canvas.height()); } $("#clear").click(function () { clearPoints(); });
+
+                hub.state.color = $("#color").val(); // Accessible from server
+                var connected = false;// UI events
+                $("#color").change(function () { hub.state.color = $(this).val(); });
+                canvas.mousemove(function (e) { if (buttonPressed && connected) { hub.server.broadcastPoint(e.offsetX, e.offsetY); } });
+                $("#clear").click(function () { if (connected) { hub.server.broadcastClear(); } });
+                // Event handlers
+                hub.client.clear = function () { clearPoints(); };
+                hub.client.drawPoint = function (x, y, color) { setPoint(x, y, color); };// Voila!
+                //$.connected = true;
+            })
+            //Callback function which the hub will call when it has finished processing,
+            // is attached to the proxy
+            chatProxy.client.receiveMessage = function (msgFrom, msg, senderid) {
+                if (msgFrom == "NewConnection") {
+                    $("#usersCount").text(senderid);
+                    $('#divUsers').append('<li>' + msg + '</li>')
+                }
+                else if (msgFrom == "ChatHub") {
+                    $("#usersCount").text(senderid);
+                    $("#connID").text(msg);
+                }
+                else if (msgFrom == "RU") {
+                    var online = senderid.split('#');
+                    var length = online.length;
+                    for (var i = 0; i < length; i++) {
+                        $('#divUsers').append('<li>' + online[i] + '</li>')
+                    }
+
+                    $('#divChat').append('<li><strong>' + msgFrom
+                        + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
+                }
+                else {
+                    $("#txtTo").val(senderid);
+                    $('#divChat').append('<li><strong>' + msgFrom
+                        + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
+                }
+            };
+        });
+
+        function registerEvents(chatHub) {
+            try {
+                chatHub.server.connect($("#spnName").text(), $("#connID").text(), $("#connID").text());
+            } catch (e) { alert(e.message); }
+        }
+
+    </script>
+
+    <div style="width: 55%; border: solid 1px Red; height: 40px">
+        <h3 style="margin: 10px 0px 0px 10px">
+            <span id="spnName"></span>
+            <span id="connID"></span>
+            <span id="usersCount"></span>
+        </h3>
+    </div>
+    <div style="width: 55%; border: solid 1px Red; height: auto">
+        <div style="height: auto" id="divUsers"></div>
+        <div style="height: 70%" id="divChat"></div>
+        <div style="border: dashed 1px Black; margin-top:5%;">
+            <div style="float: left; width: 20%; padding: 4px">
+                <input type="text" style="width: 100%" id="txtTo" />
+            </div>
+            <div style="float: left; width: 60%; padding: 4px">
+                <input type="text" style="width: 100%" id="txtMsg" />
+            </div>
+            <div style="float: right; width: 15%; padding: 4px">
+                <input type="button" id="btnSend" value="Send Message" style="width: 45px" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <label for="color">Color: </label>
+            <select id="color">
+                <option>black</option>
+                <option>red</option>
+                <option>green</option>
+                <option>blue</option>
+                <option>yellow</option>
+                <option>pink</option>
+            </select>
+        </div>
+        <canvas id="canvas" width="300" height="300"></canvas>
+        <div>
+            <button id="clear">Clear canvas</button>
+        </div>
+    </div>
+
+    <!--<canvas id="canvas" width="800" height="500" onmouseout="clearMousePositions()"></canvas>
+    <select id="color">
+        <option value="black">Black</option>
+        <option value="red">Red</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="white">Eraser</option>
+    </select>
+    <div id="output"></div>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var canvasx = $(canvas).offset().left;
+        var canvasy = $(canvas).offset().top;
+        var last_mousex = last_mousey = 0;
+        var mousex = mousey = 0;
+        var mousedown = false;
+        var tooltype = 'draw';
+
+        $(canvas).on('mousedown', function (e) {
+            last_mousex = mousex = parseInt(e.clientX - canvasx);
+            last_mousey = mousey = parseInt(e.clientY - canvasy);
+            mousedown = true;
+        });
+
+        $(canvas).on('mouseup', function (e) {
+            mousedown = false;
+        });
+
+        var drawCanvas = function (prev_x, prev_y, x, y, clr) {
+            ctx.beginPath();
+            console.log("X: " + x + " Y: " + y);
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.strokeStyle = clr
+            ctx.lineWidth = 3;
+            ctx.moveTo(prev_x, prev_y);
+            ctx.lineTo(x, y);
+            ctx.lineJoin = ctx.lineCap = 'round';
+            ctx.stroke();
+        };
+
+        $(canvas).on('mousemove', function (e) {
+            mousex = parseInt(e.clientX - canvasx);
+            mousey = parseInt(e.clientY - canvasy);
+            var clr = $('select[id=color]').val()
+
+            if ((last_mousex > 0 && last_mousey > 0) && mousedown) {
+                drawCanvas(mousex, mousey, last_mousex, last_mousey, clr);
+                connection.invoke('draw', last_mousex, last_mousey, mousex, mousey, clr);
+            }
+            last_mousex = mousex;
+            last_mousey = mousey;
+
+            $('#output').html('current: ' + mousex + ', ' + mousey + '<br/>last: ' + last_mousex + ', ' + last_mousey + '<br/>mousedown: ' + mousedown);
+        });
+
+        var mouse_down = false;
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl('/draw')
+            .build();
+
+        connection.on('draw', function (prev_x, prev_y, x, y, clr) {
+            console.log("X: " + x + " Y: " + y);
+            drawCanvas(prev_x, prev_y, x, y, clr);
+        });
+        connection.start();
+
+        clearMousePositions = function () {
+            last_mousex = 0;
+            last_mousey = 0;
+        }
+
+    </script>-->
+
+</body>
+</html>
