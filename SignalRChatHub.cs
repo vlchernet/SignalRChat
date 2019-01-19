@@ -59,7 +59,7 @@ namespace SignalRChat
             Clients.Client(touserid).receiveMessage(msgFrom, msg, id);
         }
 
-        public override Task OnConnected()
+        public override System.Threading.Tasks.Task OnConnected()
         {
             //string username = Context.QueryString["username"].ToString();
             string clientId = Context.ConnectionId;
@@ -77,12 +77,12 @@ namespace SignalRChat
             return base.OnConnected();
         }
 
-        public override Task OnReconnected()
+        public override System.Threading.Tasks.Task OnReconnected()
         {
             return base.OnReconnected();
         }
 
-        public override Task OnDisconnected(bool stopCalled)
+        public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
         {
             string count = "";
             string msg = "";
@@ -209,13 +209,12 @@ namespace SignalRChat
         //    return Clients.Others.SendAsync("draw", prevX, prevY, currentX, currentY, color);
         //}
 
-        public Task BroadcastPoint(float x, float y)
+        public void BroadcastPoint(float x, float y)
         {
-            return Clients.Others.drawPoint(x, y, Clients.Caller.color);
+            Clients.Others.drawPoint(x, y, Clients.Caller.color);
         }
 
-        public Task BroadcastClear()
-        {
+        public Task BroadcastClear() {
             return Clients.Others.clear();
         }
     }
