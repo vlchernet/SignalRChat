@@ -108,8 +108,6 @@
             updaterec: function (username, userid, connectionid) {
                 return proxies['signalRChatHub'].invoke.apply(proxies['signalRChatHub'], $.merge(["updaterec"], $.makeArray(arguments)));
             }
-
-
         };
 
         return proxies;

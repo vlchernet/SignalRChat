@@ -1,0 +1,27 @@
+.divTools
+{
+	filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#c4c4c4,endColorStr=white);
+	border:black 1 solid;
+	color:black
+}
+.divColors
+{
+	filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=1,startColorStr=white,endColorStr=#c4c4c4);
+	border:black 1 solid;
+	color:black
+}
+td, tr
+{
+	padding-left: 2px;
+	padding-top: 3px;
+	border-top		: 1px #dddddd solid;
+	border-left     : 1px #dddddd solid;
+	border-bottom   : 1px #666666 solid;
+	border-right    : 1px #666666 solid;
+}
+.btnCss
+{
+	filter:alpha(Opacity=100, FinishOpacity=50, Style=3, StartX=0, StartY=0, FinishX=200, FinishY=0);
+	background:gray; 
+	font:10px;
+}

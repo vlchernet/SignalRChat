@@ -2,14 +2,29 @@
 <html>
 <head>
     <title>SignalR Group Chat</title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
 
     <!--Add reference to the JQuery file-->
     <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <!--<script type="text/javascript" src="Scripts/signalr.min.js"></script>-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+            crossorigin="anonymous"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>-->
     <!-- Add reference to the minified version of the SignarR client library -->
     <script src="Scripts/jquery.signalR-2.2.0.min.js"></script>
     <!-- Add reference to the auto-generated proxy file -->
     <script src="signalr/hubs"></script>
+
+    <script src="Scripts/wz_jsgraphics.js" type="text/javascript"></script>
+    <script src="Scripts/constants.js" type="text/javascript"></script>
+    <script src="Scripts/drawing.js" type="text/javascript"></script>
+    <script src="Scripts/ajaxobjects.js" type="text/javascript"></script>
+    <script src="Scripts/ajaxfunctions.js" type="text/javascript"></script>
+    <script src="Scripts/common.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="lib/signalr.min.js"></script>
+
+    <link href="css/common.css" type="text/css" rel="stylesheet">
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -27,7 +42,7 @@
             $.connection.hub.start().done(function () {
 
                 try {
-                    chatProxy.server.groupconnect($("#spnName").text(), $("#connID").text(), $("#connID").text(),$("#GroupName").text());
+                    chatProxy.server.groupconnect($("#spnName").text(), $("#connID").text(), $("#connID").text(), $("#GroupName").text());
                 } catch (e) { alert(e.message); }
 
                 $("#btnSend").click(function () {
@@ -41,10 +56,9 @@
             chatProxy.client.receiveMessage = function (msgFrom, msg, senderid) {
                 if (msgFrom == "NewConnection") {
                     $("#usersCount").text(senderid);
-                    $('#divUsers').append('<li>' + msg+ '</li>')
+                    $('#divUsers').append('<li>' + msg + '</li>')
                 }
-                else if (msgFrom == "ChatHub")
-                {
+                else if (msgFrom == "ChatHub") {
                     $("#usersCount").text(senderid);
                     $("#connID").text(msg);
                 }
@@ -74,36 +88,160 @@
     </script>
 
 </head>
-<body>
+<body ms_positioning="GridLayout" onload="getData();>
 
+    <form id="Form1" method="post" runat="server" ondblclick="imageLoader()">
 
-
-    <div style="width: 55%; border: solid 1px Red; height: 40px">
-        <h3 style="margin: 10px 0px 0px 10px">
-            <span id="spnName"></span>
-            <span id="GroupName" style="margin-left:25px;"></span>
-        </h3>
-    </div>
-    <div style="width: 55%; border: solid 1px Red; height: 40px">
-        <h3 style="margin: 10px 0px 0px 10px">
-            <span id="connID"></span>
-            <span id="usersCount"></span>
-        </h3>
-    </div>
-    <div style="width: 55%; border: solid 1px Red; height: auto">
-        <div style="height: auto" id="divUsers"></div>
-        <div style="height: 70%" id="divChat"></div>
-        <div style="border: dashed 1px Black; margin-top:5%;">
-            <div style="float: left; width: 20%; padding: 4px">
-                <input type="text" style="width: 100%" id="txtTo" />
+        <font face="MS UI Gothic">
+            <div id="divTools" style="border-right: black 1px solid; border-top: black 1px solid; display: inline; z-index: 102; left: 8px; border-left: black 1px solid; width: 85px; border-bottom: black 1px solid; position: absolute; top: 24px; height: 502px"
+                 ms_positioning="FlowLayout" class="divTools" align="center">
+                <p>&nbsp;</p>
+                <p><strong>TOOLS</strong></p>
+                <p>
+                    <table id="tblTools" style="border-right: black thin; border-top: black thin; border-left: black thin; width: 80px; border-bottom: black thin; height: 32px"
+                           cellspacing="1" cellpadding="1" width="80" border="1" title="Select some Tool">
+                        <tr>
+                            <td onclick="setTool(CONST_ACTION_TOOL_LINE);">&nbsp;<img style="cursor: hand" alt="" src="images/line.jpg" /></td>
+                            <td onclick="setColor(CONST_COLOR_WHITE);setTool(CONST_ACTION_TOOL_FILLRECT);">&nbsp;<img style="cursor: hand" alt="" src="images/eraser.jpg"></td>
+                        </tr>
+                        <tr>
+                            <td onclick="setTool(CONST_ACTION_TOOL_RECT);">&nbsp;<img style="cursor: hand" alt="" src="images/rect.jpg"></td>
+                            <td onclick="setTool(CONST_ACTION_TOOL_FILLRECT);">&nbsp;<img style="cursor: hand" alt="" src="images/fillrect.jpg"></td>
+                        </tr>
+                        <tr>
+                            <td onclick="setTool(CONST_ACTION_TOOL_ELLIPSE);">&nbsp;<img style="cursor: hand" alt="" src="images/ellipse.jpg"></td>
+                            <td onclick="setTool(CONST_ACTION_TOOL_FILLELLIPSE);">&nbsp;<img style="cursor: hand" alt="" src="images/fillellipse.jpg"></td>
+                        </tr>
+                        <tr>
+                            <td onclick="setTool(CONST_ACTION_TEXT);">&nbsp;<img style="cursor: hand" alt="" src="images/text.jpg"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </p>
+                <p><strong>STROKE</strong></p>
+                <p>
+                    <table id="tblStroke" style="width: 80px; height: 96px" cellspacing="1" cellpadding="1"
+                           width="80" border="1">
+                        <tr>
+                            <td style="cursor: hand" onclick="setStroke(CONST_STROKE_1);" align="center" colspan="2">1</td>
+                        </tr>
+                        <tr>
+                            <td style="cursor: hand" onclick="setStroke(CONST_STROKE_2);" align="center" colspan="2">2</td>
+                        </tr>
+                        <tr>
+                            <td style="cursor: hand" onclick="setStroke(CONST_STROKE_3);" align="center" colspan="2">3</td>
+                        </tr>
+                        <tr>
+                            <td style="cursor: hand" onclick="setStroke(CONST_STROKE_4);" align="center" colspan="2">4</td>
+                        </tr>
+                        <tr>
+                            <td style="cursor: hand" onclick="setStroke(CONST_STROKE_5);" align="center" colspan="2">5</td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                <div id="divSelectedStroke" style="display: inline; width: 72px; height: 16px" ms_positioning="FlowLayout"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
             </div>
-            <div style="float: left; width: 60%; padding: 4px">
-                <input type="text" style="width: 100%" id="txtMsg" />
+            <input class="btnCss" id="btnGetData" style="z-index: 108; left: 8px; position: absolute; top: 600px"
+                   type="button" value="Get Server Data" name="Button1" onclick="getDataAgain();">
+            <input id="btnClearServer" style="z-index: 107; left: 128px; position: absolute; top: 600px"
+                   type="button" value="Clear Server Data" name="Button1" class="btnCss" onclick="clearServerData();">
+
+            <div id="divColors" style="clear: none; border-right: black 1px solid; border-top: black 1px solid; display: inline; z-index: 103; left: 8px; border-left: black 1px solid; width: 696px; border-bottom: black 1px solid; position: absolute; top: 528px; height: 63px"
+                 ms_positioning="FlowLayout" class="divColors">
+                <table id="tblColors" style="width: 240px; height: 45px" cellspacing="1" cellpadding="1"
+                       border="1">
+                    <tr>
+                        <td style="width: 78px" align="center" rowspan="2">
+                            <div id="divSelectedColor" style="display: inline; width: 20px; height: 20px; background-color: black"
+                                 ms_positioning="FlowLayout">
+                            </div>
+                        </td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_PURPLE);" bgcolor="purple">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_GRAY);" bgcolor="gray">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_RED);" bgcolor="red">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_BLUE);" bgcolor="blue">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_YELLOW);" bgcolor="yellow">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_AQUA);" bgcolor="aqua">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_BLACK);" bgcolor="black">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_MAROON);" bgcolor="maroon">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_BROWN);" bgcolor="brown">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_GREEN);" bgcolor="green">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_ORANGE);" bgcolor="orange">&nbsp;</td>
+                        <td style="width: 20px; cursor: hand" onclick="setColor(CONST_COLOR_PINK);" bgcolor="pink">&nbsp;</td>
+                    </tr>
+                </table>
             </div>
-            <div style="float: right; width: 15%; padding: 4px">
-                <input type="button" id="btnSend" value="Send Message" style="width: 45px" />
+            <div onmouseup="toggleLoading(true);setEnd(event.offsetX, event.offsetY);drawPic();setData();"
+                 onmousedown="setStart(event.offsetX, event.offsetY);" id="divCanvas" style="border-right: black 1px solid; border-top: black 1px solid; display: inline; z-index: 104; left: 96px; border-left: black 1px solid; width: 608px; border-bottom: black 1px solid; position: absolute; top: 24px; height: 502px"
+                 ms_positioning="FlowLayout">
+            </div>
+            <div id="divLoading" style="display: inline; z-index: 101; left: 8px; visibility: hidden; width: 88px; color: white; position: absolute; top: 0px; height: 24px; background-color: red"
+                 ms_positioning="FlowLayout">
+                &nbsp;<strong><font size="4">Loading...</font></strong>
+            </div>
+            <input id="ReadFrom" style="z-index: 105; left: 712px; width: 24px; position: absolute; top: 8px; height: 22px"
+                   type="hidden" size="1" value="0">
+            <input id="btnClearLocal" style="z-index: 106; left: 584px; position: absolute; top: 600px"
+                   type="button" value="Clear Local Data" onclick="if (confirm(CONST_QUESTION_CLEAR_LOCAL)) clearCanvas();" class="btnCss">
+            <div class="divColors" style="display: inline; z-index: 109; left: 8px; width: 696px; position: absolute; top: 632px; height: 16px"
+                 ms_positioning="FlowLayout">
+                <!--<ul>
+                    <li>Select Tool !</li>
+                    <li>Select Color !!</li>
+                    <li>Draw !!!</li>
+                </ul>-->
+            </div>
+
+        </font>
+    </form>
+
+    <div style="position: absolute; top: 650px; width: 1300px;">
+
+        <div style="width: 55%; border: solid 1px Red; height: 40px">
+            <h3 style="margin: 10px 0px 0px 10px">
+                <span id="spnName"></span>
+                <span id="GroupName" style="margin-left:25px;"></span>
+            </h3>
+        </div>
+        <div style="width: 55%; border: solid 1px Red; height: 40px">
+            <h3 style="margin: 10px 0px 0px 10px">
+                <span id="connID"></span>
+                <span id="usersCount"></span>
+            </h3>
+        </div>
+        <div style="width: 55%; border: solid 1px Red; height: auto">
+            <div style="height: auto" id="divUsers"></div>
+            <div style="height: 70%" id="divChat"></div>
+            <div style="border: dashed 1px Black; margin-top:5%;">
+                <div style="float: left; width: 20%; padding: 4px">
+                    <input type="text" style="width: 100%" id="txtTo" />
+                </div>
+                <div style="float: left; width: 60%; padding: 4px">
+                    <input type="text" style="width: 100%" id="txtMsg" />
+                </div>
+                <div style="float: right; width: 15%; padding: 4px">
+                    <input type="button" id="btnSend" value="Send Message" style="width: 45px" />
+                </div>
             </div>
         </div>
     </div>
+
+
+
 </body>
 </html>
