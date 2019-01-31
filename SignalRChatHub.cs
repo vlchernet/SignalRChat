@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-
+using System.Threading.Tasks;
 
 namespace SignalRChat
 {
@@ -12,23 +12,23 @@ namespace SignalRChat
     public class SignalRChatHub : Hub
     {
         #region---Data Members---
-        static List<UserDetail> ConnectedUsers = new List<UserDetail>();
-        static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
+        private static readonly List<UserDetail> ConnectedUsers = new List<UserDetail>();
+        private static readonly List<MessageDetail> CurrentMessage = new List<MessageDetail>();
         #endregion
-      
-        SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["CHCON"].ConnectionString);
+
+        private SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["CHCON"].ConnectionString);
 
         public void BroadCastMessage(String msgFrom, String msg)
-        {                      
+        {
             var id = Context.ConnectionId;
-            Clients.All.receiveMessage(msgFrom, msg, "");            
+            Clients.All.receiveMessage(msgFrom, msg, "");
             /*string[] Exceptional = new string[1];
             Exceptional[0] = id;       
-            Clients.AllExcept(Exceptional).receiveMessage(msgFrom, msg);*/           
+            Clients.AllExcept(Exceptional).receiveMessage(msgFrom, msg);*/
         }
 
         [HubMethodName("hubconnect")]
-        public void Get_Connect(String username,String userid,String connectionid)
+        public void Get_Connect(String username, String userid, String connectionid)
         {
             string count = "";
             string msg = "";
@@ -41,44 +41,44 @@ namespace SignalRChat
             }
             catch (Exception d)
             {
-                msg = "DB Error "+d.Message;
+                msg = "DB Error " + d.Message;
             }
             var id = Context.ConnectionId;
-            
+
             string[] Exceptional = new string[1];
             Exceptional[0] = id;
             Clients.Caller.receiveMessage("RU", msg, list);
-            Clients.AllExcept(Exceptional).receiveMessage("NewConnection", username+" "+id,count);            
+            Clients.AllExcept(Exceptional).receiveMessage("NewConnection", username + " " + id, count);
         }
 
         //[HubMethodName("privatemessage")]
         public void Send_PrivateMessage(String msgFrom, String msg, String touserid)
         {
             var id = Context.ConnectionId;
-            Clients.Caller.receiveMessage(msgFrom, msg,touserid);
-            Clients.Client(touserid).receiveMessage(msgFrom, msg,id);
+            Clients.Caller.receiveMessage(msgFrom, msg, touserid);
+            Clients.Client(touserid).receiveMessage(msgFrom, msg, id);
         }
 
         public override System.Threading.Tasks.Task OnConnected()
         {
             //string username = Context.QueryString["username"].ToString();
             string clientId = Context.ConnectionId;
-            string data =clientId;
+            string data = clientId;
             string count = "";
             try
             {
-                count= GetCount().ToString();
+                count = GetCount().ToString();
             }
             catch (Exception d)
             {
                 count = d.Message;
-            }            
+            }
             Clients.Caller.receiveMessage("ChatHub", data, count);
             return base.OnConnected();
         }
 
         public override System.Threading.Tasks.Task OnReconnected()
-        {         
+        {
             return base.OnReconnected();
         }
 
@@ -86,7 +86,7 @@ namespace SignalRChat
         {
             string count = "";
             string msg = "";
-           
+
             string clientId = Context.ConnectionId;
             DeleteRecord(clientId);
 
@@ -100,12 +100,12 @@ namespace SignalRChat
             }
             string[] Exceptional = new string[1];
             Exceptional[0] = clientId;
-            Clients.AllExcept(Exceptional).receiveMessage("NewConnection", clientId+" leave", count);
+            Clients.AllExcept(Exceptional).receiveMessage("NewConnection", clientId + " leave", count);
 
             return base.OnDisconnected(stopCalled);
         }
 
-        public string updaterec(string username,string userid, string connectionid)
+        public string updaterec(string username, string userid, string connectionid)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace SignalRChat
             {
                 sqlcon.Close();
                 return d.Message;
-            }            
+            }
         }
 
         public int GetCount()
@@ -151,7 +151,7 @@ namespace SignalRChat
                 result = true;
             }
             catch (Exception)
-            {   
+            {
             }
             sqlcon.Close();
             return result;
@@ -169,7 +169,7 @@ namespace SignalRChat
                 SqlDataReader reader = listrec.ExecuteReader();
                 reader.Read();
 
-                for (int i = 0; i < (count-1); i++)
+                for (int i = 0; i < (count - 1); i++)
                 {
                     list += reader.GetValue(0).ToString() + " ( " + reader.GetValue(1).ToString() + " )#";
                     reader.Read();
@@ -184,7 +184,7 @@ namespace SignalRChat
 
         public void Create_Group(string GroupName)
         {
-            
+
         }
 
         private string GetClientId()
@@ -193,7 +193,7 @@ namespace SignalRChat
             if (Context.QueryString["clientId"] != null)
             {
                 // clientId passed from application 
-                clientId = this.Context.QueryString["clientId"];
+                clientId = Context.QueryString["clientId"];
             }
 
             if (string.IsNullOrEmpty(clientId.Trim()))
@@ -202,6 +202,20 @@ namespace SignalRChat
             }
 
             return clientId;
+        }
+
+        //private Task Draw(int prevX, int prevY, int currentX, int currentY, string color)
+        //{
+        //    return Clients.Others.SendAsync("draw", prevX, prevY, currentX, currentY, color);
+        //}
+
+        public void BroadcastPoint(float x, float y)
+        {
+            Clients.Others.drawPoint(x, y, Clients.Caller.color);
+        }
+
+        public Task BroadcastClear() {
+            return Clients.Others.clear();
         }
     }
 }
